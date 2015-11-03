@@ -63,7 +63,7 @@ function Get-ADGroupMemberManager
 
     if ($WhatIf)
     {
-        Send-ADGroupMemberManagerNotification -inputobject $results -WhatIf
+        Send-ADGroupMemberManagerNotification -inputobject $results -WhatIf -FolderPath $FolderPath
     }
     else
     {
