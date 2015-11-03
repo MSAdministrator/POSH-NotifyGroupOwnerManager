@@ -33,7 +33,15 @@ function Send-ADGroupMemberManagerNotification
         [ValidateNotNullOrEmpty()]
         [object]$inputobject,
         [Parameter()]
-        [switch]$WhatIf
+        [switch]$WhatIf,
+        
+        [Parameter(Mandatory=$true, 
+                   ValueFromPipeline=$true,
+                   ValueFromPipelineByPropertyName=$true)]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [Alias("OutPath")] 
+        $FolderPath = ([Environment]::GetFolderPath("Desktop"))
     )
 
     Clear-Host
@@ -46,9 +54,9 @@ function Send-ADGroupMemberManagerNotification
         $msg=('An error occurred that could not be resolved: {0}' –f $_.Exception.Message)
         Write-Warning $msg
         #Write the exception to a log file
-        $_.Exception | Select-Object * | Out-file "$(Split-Path $Script:MyInvocation.MyCommand.Path)\errors.txt" –append
+        $_.Exception | Select-Object * | Out-file "$($FolderPath)\errors.txt" –append
         #Export the error to XML for later diagnosis
-        $_ | Export-Clixml "$(Split-Path $Script:MyInvocation.MyCommand.Path)\UnknownException.xml"
+        $_ | Export-Clixml "$($FolderPath)\UnknownException.xml"
     }
 
 
