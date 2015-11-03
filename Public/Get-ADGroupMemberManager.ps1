@@ -10,7 +10,7 @@
 .PARAMETER SearchBase
     This parameter set's the scope of the AD Group search.  Please provide a OU structured string to begin the search.
 .EXAMPLE
-   Get-ADGroupMemberManager -SearchBase 'OU=ISAM Managed,OU=Groups,OU=Division Resources,OU=IATS,OU=MU,DC=col,DC=missouri,DC=edu'
+   Get-ADGroupMemberManager -SearchBase 'OU=Managed,OU=Groups,OU=Division Resources,DC=some,DC=domain,DC=com'
 .INPUTS
    Inputs to this cmdlet (if any)
 .OUTPUTS
