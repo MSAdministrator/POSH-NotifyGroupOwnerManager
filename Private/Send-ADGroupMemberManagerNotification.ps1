@@ -1,24 +1,16 @@
 ﻿<#
 .Synopsis
-   Short description
+   This function takes a custom object outputted by Find-ADGroupMemberManager and sends an email to the Manager of the ManagedBy 
+   assigned to group for verification 
 .DESCRIPTION
-   Long description
+   This function takes a custom object outputted by Find-ADGroupMemberManager and sends an email to the Manager of the ManagedBy 
+   assigned to group for verification.  This function will only send one email per manager of all groups with a ManagedBy user 
+   assigned to them.  THe email includes all the groups for users they are managers of, as well as the description (if present),
+   and the Group Name itself.
 .EXAMPLE
-   Example of how to use this cmdlet
+   Send-ADGroupMemberManagerNotification -inputobject $inputobject -FolderPath $FolderPath
 .EXAMPLE
-   Another example of how to use this cmdlet
-.INPUTS
-   Inputs to this cmdlet (if any)
-.OUTPUTS
-   Output from this cmdlet (if any)
-.NOTES
-   General notes
-.COMPONENT
-   The component this cmdlet belongs to
-.ROLE
-   The role this cmdlet belongs to
-.FUNCTIONALITY
-   The functionality that best describes this cmdlet
+   Send-ADGroupMemberManagerNotification -inputobject $inputobject -FolderPath $FolderPath -WhatIf
 #>
 function Send-ADGroupMemberManagerNotification
 {
@@ -32,6 +24,7 @@ function Send-ADGroupMemberManagerNotification
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [object]$inputobject,
+        
         [Parameter()]
         [switch]$WhatIf,
         
@@ -139,10 +132,10 @@ function Send-ADGroupMemberManagerNotification
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 <div id="header" >
         <div style="float:left; margin-top:20px" >
-            <img src="https://raw.githubusercontent.com/MSAdministrator/QualysGuard-V1-API---PowerShell/master/images/doit_logo.jpg" height="70" alt="logo" align="left" />
+            <img src="https://raw.githubusercontent.com/somepath/logo.png" height="70" alt="logo" align="left" />
         </div>
         <div style="float:right; margin-top:20px" >
-            <img src="https://raw.githubusercontent.com/MSAdministrator/QualysGuard-V1-API---PowerShell/master/images/mu_logo.png" height="70" alt="logo" align="right" />
+            <img src="https://raw.githubusercontent.com/somepath/logo.png" height="70" alt="logo" align="right" />
         </div>
     </div>
 </table>
@@ -160,7 +153,7 @@ function Send-ADGroupMemberManagerNotification
     <tr>
         <td style="padding:5px;">
             <p><b>Hello $($managerEmail[$i])
-            <p><b>The following information lists groups which control access to electronic resources at the University of Missouri. You are receiving this message since the groups are managed (owned) by individuals who report to you, per the University's Global Address List (GAL).</b></p>
+            <p><b>The following information lists groups which control access to electronic resources. You are receiving this message since the groups are managed (owned) by individuals who report to you, per the University's Global Address List (GAL).</b></p>
             <p><b>Please review the list and reply back with group manager changes if they are needed.</b></p>    
                
 
@@ -188,10 +181,9 @@ function Send-ADGroupMemberManagerNotification
             $Outlook = New-Object -ComObject Outlook.Application
 
             $Mail = $Outlook.CreateItem(0)
-            #$Mail.To = "$($managerEmail[$i])"
-            $Mail.To = 'rickardj@missouri.edu'
-            #$Mail.Sentonbehalfofname = "abuse@missouri.edu"
-            $Mail.Subject = "[DRAFT]AD Group Owner Verification"
+            $Mail.To = "$($managerEmail[$i])"
+            #$Mail.Sentonbehalfofname = "someemail@somecompany.com"
+            $Mail.Subject = "AD Group Owner Verification"
     
             $Mail.HTMLBody =$html
             $Mail.Send()
